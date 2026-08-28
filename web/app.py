@@ -130,6 +130,18 @@ def run_inference(samples):
     return INTERPRETER.get_tensor(OUTPUT_INDEX)[0].astype(np.float32), "INT8 TFLite model"
 
 
+def probability_vector(scores):
+    """Return a finite, normalized probability vector for the UI and API."""
+    values = np.asarray(scores, dtype=np.float32).reshape(-1)
+    if len(values) != len(CLASSES) or not np.all(np.isfinite(values)):
+        return np.full(len(CLASSES), 1.0 / len(CLASSES), dtype=np.float32)
+    if np.any(values < 0.0) or not np.isclose(float(values.sum()), 1.0, atol=1e-3):
+        values = values - np.max(values)
+        values = np.exp(values)
+    total = float(values.sum())
+    return values / total if total > 0.0 else np.full(len(CLASSES), 1.0 / len(CLASSES), dtype=np.float32)
+
+
 @app.get("/")
 def index():
     return render_template("index.html", classes=CLASSES)
@@ -147,6 +159,7 @@ def predict():
     except ValueError as error:
         return jsonify({"status": "ERROR", "error": str(error)}), 422
     scores, source = run_inference(window)
+    scores = probability_vector(scores)
     top_index = int(np.argmax(scores))
     confidence = float(np.clip(scores[top_index], 0.0, 1.0))
     keyword = CLASSES[top_index] if top_index < len(CLASSES) else None
@@ -154,17 +167,21 @@ def predict():
         return jsonify({"status": "ERROR", "error": "Unrecognized word. Please say one of the 10 target keywords and try again."}), 422
     latency = (time.perf_counter() - started) * 1000.0
     status = "PASS" if confidence >= CONFIDENCE_THRESHOLD else "FAIL"
+    probabilities = {name: round(float(score) * 100.0, 1) for name, score in zip(CLASSES, scores)}
     return jsonify({
         "status": status,
         "keyword": keyword,
         "index": TARGET_CLASSES.index(keyword) + 1,
         "confidence": round(confidence * 100, 1),
+        "latency_ms": round(latency, 2),
         "vadEnergy": vad_energy,
+        "vad_energy": vad_energy,
         "latencyMs": round(latency, 2),
         "p95Ms": 1.59,
         "latencyPass": latency <= LATENCY_LIMIT_MS,
         "actuation": "RED LED (GPIO 4)" if keyword in ("STOP", "NO", "OFF") else "GREEN LED (GPIO 5)",
         "modelSource": source,
+        "probabilities": probabilities,
     })
 
 
