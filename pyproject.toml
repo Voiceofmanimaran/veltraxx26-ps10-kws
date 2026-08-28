@@ -1,2 +1,11 @@
+[project]
+name = "ps10-edge-kws-dashboard"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+	"Flask>=3.0,<4.0",
+	"numpy>=1.26,<3.0",
+]
+
 [tool.vercel]
 entrypoint = "web.app:app"
