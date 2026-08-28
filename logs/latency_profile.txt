@@ -1,0 +1,16 @@
+=========================================================
+      PS-10 LATENCY & TIMING PROFILING REPORT
+=========================================================
+Target Classes                   : down, go, left, no, off, on, right, stop, up, yes
+Benchmark Frames Evaluated       : 50
+Model Architecture               : 1D Depthwise Separable CNN
+Arithmetic Mode                  : Integer Quantized (INT8)
+---------------------------------------------------------
+Avg Feature Extraction (LUT/MFCC): 1.23 ms
+Avg 1D DS-CNN INT8 Inference     : 0.03 ms
+Avg End-to-End Execution Latency : 1.26 ms
+95th Percentile Latency (P95)    : 1.59 ms
+Worst-Case Peak Latency (P100)   : 3.30 ms
+PS-10 Latency Ceiling Constraint : <= 50.00 ms
+Status                           : PASSED [OPTIMAL]
+=========================================================
