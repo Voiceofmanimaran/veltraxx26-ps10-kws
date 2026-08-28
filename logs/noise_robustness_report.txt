@@ -2,8 +2,8 @@
      PS-10 ACOUSTIC NOISE & STRESS BENCHMARK REPORT
 =========================================================
 Clean Audio (Baseline)                   :  68.67% (206/300)
-20 dB SNR (Light Ambient Noise)          :  52.00% (156/300)
-10 dB SNR (Moderate Background Noise)    :  37.33% (112/300)
-5 dB SNR (Heavy Acoustic Noise)          :  27.67% (83/300)
-0 dB SNR (Extreme / Industrial Noise)    :  19.00% (57/300)
+20 dB SNR (Light Ambient Noise)          :  53.33% (160/300)
+10 dB SNR (Moderate Background Noise)    :  37.67% (113/300)
+5 dB SNR (Heavy Acoustic Noise)          :  26.33% (79/300)
+0 dB SNR (Extreme / Industrial Noise)    :  24.00% (72/300)
 =========================================================
