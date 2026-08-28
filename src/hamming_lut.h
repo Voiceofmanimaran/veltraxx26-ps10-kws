@@ -1,15 +1,8 @@
 #ifndef HAMMING_LUT_H
 #define HAMMING_LUT_H
 
-#ifdef __cplusplus
-#include <cstdint>
-#else
-#include <stdint.h>
-#endif
-
-#ifndef int16_t
-typedef short int16_t;
-#endif
+// Fully self-contained signed 16-bit type definition (No external standard library required)
+typedef signed short int16_t;
 
 // Precomputed 480-point Q15 Fixed-Point Hamming Window Look-Up Table
 // Scaled by 32767 (Zero-FPU Trigonometry for Microcontrollers)
